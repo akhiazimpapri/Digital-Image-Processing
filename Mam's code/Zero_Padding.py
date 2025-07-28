@@ -17,9 +17,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 def main():
-    img_path = '/home/bibrity/CSE_Courses/CSE4161_DIP/Images/rose1.jpeg'
+    img_path = '/Users/akhi/Desktop/akhi/DIP/SC.jpeg'
     img1 = load_image(img_path)
-    img_path = '/home/bibrity/CSE_Courses/CSE4161_DIP/Images/RGB_Ball.png'
+    img_path = '/Users/akhi/Desktop/akhi/DIP/SC.jpeg'
     img2 = load_image(img_path)
 
     #--- Apply zero padding
