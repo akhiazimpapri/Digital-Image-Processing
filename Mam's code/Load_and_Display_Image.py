@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 
 def main():
     #--- Load an image
-    img_path = '/home/cseru/CSE_Courses/CSE4161_DIP/Images/rgb1.jpg'
+    img_path = '/Users/akhi/Desktop/DIP/images/FLOWER.jpeg'
     bgr_img = cv2.imread(img_path)
 	
     #--- Change channel order to cope with Matplotlib requirement.
