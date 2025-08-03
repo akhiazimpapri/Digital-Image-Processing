@@ -52,7 +52,7 @@ def prepare_histogram(img, color_channel):
 # --- Main Execution ---
 
 # Load image in BGR, convert to RGB
-img = cv2.imread('/Users/akhi/Desktop/akhi/DIP/FLOWER.jpeg')
+img = cv2.imread('/Users/akhi/Desktop/DIP/images/FLOWER.jpeg')
 img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
 # Split RGB channels

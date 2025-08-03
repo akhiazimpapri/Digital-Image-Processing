@@ -4,7 +4,7 @@ import numpy as np
 
 def main():
     c = 500.0  # constant multiplier
-    img_path = '/Users/akhi/Desktop/akhi/DIP/scn.jpeg'
+    img_path = '/Users/akhi/Desktop/DIP/images/scn.jpeg'
     
     # Read image in grayscale
     img_gray = cv2.imread(img_path,0)

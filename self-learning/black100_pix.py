@@ -1,7 +1,7 @@
 import cv2
 import matplotlib.pyplot as plt
 
-img = cv2.imread('/Users/akhi/Desktop/akhi/DIP/img.png')
+img = cv2.imread('/Users/akhi/Desktop/DIP/images/img.png')
 if img is None:
     print("Image not found")
     exit()

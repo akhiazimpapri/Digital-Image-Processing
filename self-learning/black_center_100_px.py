@@ -2,7 +2,7 @@ import cv2
 import matplotlib.pyplot as plt
 
 # Load the image
-img = cv2.imread('/Users/akhi/Desktop/akhi/DIP/FLOWER.jpeg')
+img = cv2.imread('/Users/akhi/Desktop/DIP/images/FLOWER.jpeg')
 if img is None:
     print("Image not found")
     exit()

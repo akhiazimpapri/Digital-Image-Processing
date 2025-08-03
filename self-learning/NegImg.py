@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import cv2 
 
 def main():
-    img_path = '/Users/akhi/Desktop/akhi/DIP/img.png'  # Provide the actual image path here
+    img_path = '/Users/akhi/Desktop/DIP/images/img.png'  # Provide the actual image path here
 
     img_3D = cv2.imread(img_path)
     if img_3D is None:

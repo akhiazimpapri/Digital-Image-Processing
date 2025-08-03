@@ -2,82 +2,37 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def main():
-    h, w = 200, 200
+    h, w = 100, 100
+    steps = 5
 
-    # --- White shades ---
-    white_0 = np.zeros((h, w, 3), dtype=np.uint8)                   # Black
-    white_1 = np.full((h, w, 3), 127, dtype=np.uint8)               # 50% White
-    white_2 = np.full((h, w, 3), 255, dtype=np.uint8)               # White
+    # Define 7 base colors
+    color_dict = {
+        "White": [255, 255, 255],
+        "Red": [255, 0, 0],
+        "Green": [0, 255, 0],
+        "Blue": [0, 0, 255],
+        "Yellow": [255, 255, 0],
+        "Cyan": [0, 255, 255],
+        "Magenta": [255, 0, 255]
+    }
 
-    # --- Red shades ---
-    red_0 = np.zeros((h, w, 3), dtype=np.uint8)
-    red_1 = np.zeros((h, w, 3), dtype=np.uint8)
-    red_2 = np.zeros((h, w, 3), dtype=np.uint8)
-    red_1[:, :, 0] = 127
-    red_2[:, :, 0] = 255
+    img_set = []
+    title_set = []
+    color_set = []
 
-    # --- Green shades ---
-    green_0 = np.zeros((h, w, 3), dtype=np.uint8)
-    green_1 = np.zeros((h, w, 3), dtype=np.uint8)
-    green_2 = np.zeros((h, w, 3), dtype=np.uint8)
-    green_1[:, :, 1] = 127
-    green_2[:, :, 1] = 255
+    for color_name, rgb in color_dict.items():
+        for i in range(steps):
+            factor = i / (steps - 1)
+            shade = (np.array(rgb) * factor).astype(np.uint8)
+            shade_img = np.ones((h, w, 3), dtype=np.uint8) * shade
+            img_set.append(shade_img)
+            title_set.append(f"{color_name} Shade {i}")
+            color_set.append(None)
 
-    # --- Blue shades ---
-    blue_0 = np.zeros((h, w, 3), dtype=np.uint8)
-    blue_1 = np.zeros((h, w, 3), dtype=np.uint8)
-    blue_2 = np.zeros((h, w, 3), dtype=np.uint8)
-    blue_1[:, :, 2] = 127
-    blue_2[:, :, 2] = 255
-
-    # --- Cyan shades (G+B) ---
-    cyan_0 = np.zeros((h, w, 3), dtype=np.uint8)
-    cyan_1 = np.zeros((h, w, 3), dtype=np.uint8)
-    cyan_2 = np.zeros((h, w, 3), dtype=np.uint8)
-    cyan_1[:, :, 1:] = 127
-    cyan_2[:, :, 1:] = 255
-
-    # --- Magenta shades (R+B) ---
-    magenta_0 = np.zeros((h, w, 3), dtype=np.uint8)
-    magenta_1 = np.zeros((h, w, 3), dtype=np.uint8)
-    magenta_2 = np.zeros((h, w, 3), dtype=np.uint8)
-    magenta_1[:, :, [0, 2]] = 127
-    magenta_2[:, :, [0, 2]] = 255
-
-    # --- Yellow shades (R+G) ---
-    yellow_0 = np.zeros((h, w, 3), dtype=np.uint8)
-    yellow_1 = np.zeros((h, w, 3), dtype=np.uint8)
-    yellow_2 = np.zeros((h, w, 3), dtype=np.uint8)
-    yellow_1[:, :, [0, 1]] = 127
-    yellow_2[:, :, [0, 1]] = 255
-
-    # Combine all images
-    img_set = [
-        white_0, white_1, white_2,
-        red_0, red_1, red_2,
-        green_0, green_1, green_2,
-        blue_0, blue_1, blue_2,
-        cyan_0, cyan_1, cyan_2,
-        magenta_0, magenta_1, magenta_2,
-        yellow_0, yellow_1, yellow_2
-    ]
-
-    title_set = [
-        'White 0%', 'White 50%', 'White 100%',
-        'Red 0%', 'Red 50%', 'Red 100%',
-        'Green 0%', 'Green 50%', 'Green 100%',
-        'Blue 0%', 'Blue 50%', 'Blue 100%',
-        'Cyan 0%', 'Cyan 50%', 'Cyan 100%',
-        'Magenta 0%', 'Magenta 50%', 'Magenta 100%',
-        'Yellow 0%', 'Yellow 50%', 'Yellow 100%'
-    ]
-
-    color_set = [None] * len(img_set)
-
-    display_imgset(img_set, color_set, title_set, row=7, col=3)
+    display_imgset(img_set, color_set, title_set, row=7, col=5)
 
 def display_imgset(img_set, color_set, title_set='', row=1, col=1):
-    plt.figure(figsize=(10, 12))
+    plt.figure(figsize=(15, 10))
     for k in range(len(img_set)):
         plt.subplot(row, col, k + 1)
         img = img_set[k]
@@ -86,7 +41,7 @@ def display_imgset(img_set, color_set, title_set='', row=1, col=1):
         else:
             plt.imshow(img)
         plt.title(title_set[k], fontsize=9)
-        plt.axis('off')
+        plt.axis()
     plt.tight_layout()
     plt.show()
 

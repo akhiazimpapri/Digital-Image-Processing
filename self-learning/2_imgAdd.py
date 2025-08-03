@@ -2,8 +2,8 @@ import matplotlib.pyplot as plt
 import cv2 
 
 def main():
-    img_path = '/Users/akhi/Desktop/akhi/DIP/FLOWER.jpeg'  # Provide the actual image path here
-    img_path1 = '/Users/akhi/Desktop/akhi/DIP/img.png'
+    img_path = '/Users/akhi/Desktop/DIP/images/FLOWER.jpeg'  # Provide the actual image path here
+    img_path1 = '/Users/akhi/Desktop/DIP/images/img.png'
 
     img_3D = cv2.imread(img_path)
     img_3D1 = cv2.imread(img_path1)

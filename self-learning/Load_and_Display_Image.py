@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
 def main():
-    img_path = '/Users/akhi/Desktop/akhi/DIP/image.png'
+    img_path = '/Users/akhi/Desktop/DIP/images/image.png'
     img_4D = plt.imread(img_path)
     print(img_4D.shape)
 

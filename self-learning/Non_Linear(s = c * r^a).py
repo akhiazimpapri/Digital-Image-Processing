@@ -6,7 +6,7 @@ def main():
     # Power-law transformation: s = c * r^a
     c = 1.0
     gamma_values = [0.1, 0.3, 0.7, 1, 2, 3]
-    img_path = '/Users/akhi/Desktop/akhi/DIP/SC.jpg'
+    img_path = '/Users/akhi/Desktop/DIP/images/SC.jpg'
 
     #Read grayscale image
     imge = cv2.imread(img_path)

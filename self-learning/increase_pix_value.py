@@ -3,7 +3,7 @@ import cv2
 
 def main():
     C = 10
-    img_path = '/Users/akhi/Desktop/akhi/DIP/FLOWER.jpeg'  # Provide the actual image path here
+    img_path = '/Users/akhi/Desktop/DIP/images/FLOWER.jpeg'  # Provide the actual image path here
 
     img_3D = cv2.imread(img_path)
     if img_3D is None:
