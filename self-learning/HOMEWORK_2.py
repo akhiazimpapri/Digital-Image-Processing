@@ -41,7 +41,7 @@ def display_imgset(img_set, color_set, title_set='', row=1, col=1):
         else:
             plt.imshow(img)
         plt.title(title_set[k], fontsize=9)
-        plt.axis()
+        plt.axis('off')
     plt.tight_layout()
     plt.show()
 
