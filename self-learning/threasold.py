@@ -1,106 +1,67 @@
-import cv2
 import numpy as np
 import matplotlib.pyplot as plt
+import cv2
 
-# Load grayscale image
-image = cv2.imread('/Users/akhi/Desktop/DIP/images/FLOWER.jpeg', cv2.IMREAD_GRAYSCALE)
-if image is None:
-    print("Error loading image")
-    exit()
+def func1(img):
+    m = 128
+    img1 = np.where(img >= m, 1, 0).astype(np.uint8) * 255
+    return img1
 
-# Unit Step Thresholding
-def unit_step_threshold(img, t):
-    out = np.zeros_like(img)
-    out[img >= t] = 255
-    return out
+def func2(img):
+    m = 1.02
+    c = 0
+    thres1 = 128
+    thres2 = 196
+    img1 = np.zeros_like(img, dtype=np.float32)
+    
+    img1[img < thres1] = m * img[img < thres1] + c
+    mask = (img >= thres1) & (img < thres2)
+    img1[mask] = 0.5 * 255
+    img1[img >= thres2] = 255
+    
+    return np.clip(img1, 0, 255).astype(np.uint8)
 
-# Ramp Thresholding
-def ramp_threshold(img, t):
-    out = np.zeros_like(img)
-    mask = img >= t
-    out[mask] = img[mask] - t
-    return out
+def func3(img):
+    m = 1.05
+    c = 5
+    thres1 = 50
+    thres2 = 196
+    img1 = np.zeros_like(img, dtype=np.float32)
+    
+    img1[img <= thres1] = 0
+    mask = (img > thres1) & (img <= thres2)
+    img1[mask] = m * img[mask] + c
+    img1[img > thres2] = 0.75 * 255
+    
+    return np.clip(img1, 0, 255).astype(np.uint8)
 
-# Quadratic Transform: y = 7x² + 3x - 10
-def quadratic_transform(img, t):
-    img_f = img.astype(np.float32)
-    trans = 7 * (img_f ** 2) + 3 * img_f - 10
-    trans = (trans - trans.min()) / (trans.max() - trans.min()) * 255
-    trans = trans.astype(np.uint8)
-    out = np.zeros_like(trans)
-    out[trans >= t] = 255
-    return out
+def main():
+    img1 = cv2.imread('/Users/akhi/Desktop/DIP/images/FLOWER.jpeg', 0)
+    if img1 is None:
+        print("Image not found!")
+        return
+    
+    img11 = func1(img1)
+    img12 = func2(img1)
+    img13 = func3(img1)
+    
+    img_set = [img1, img11, img12, img13]
+    title_set = ["Original image", "Applying step func", "Applying func2", "Applying func3"]
+    
+    plt.figure(figsize=(15, 8))
+    
+    for i in range(4):
+        plt.subplot(2, 4, i+1)
+        plt.title(title_set[i])
+        plt.imshow(img_set[i], cmap='gray')
+        plt.axis('off')
+        
+        plt.subplot(2, 4, i+5)
+        plt.hist(img_set[i].ravel(), bins=256, color='gray')
+        plt.title("Histogram")
+    
+    plt.tight_layout()
+    plt.show()
 
-# Apply transformations (no loops)
-u1 = unit_step_threshold(image, 50)
-u2 = unit_step_threshold(image, 128)
-u3 = unit_step_threshold(image, 200)
-
-r1 = ramp_threshold(image, 50)
-r2 = ramp_threshold(image, 100)
-r3 = ramp_threshold(image, 150)
-
-q1 = quadratic_transform(image, 50)
-q2 = quadratic_transform(image, 128)
-q3 = quadratic_transform(image, 200)
-
-# Plot results with subplot
-plt.figure(figsize=(10, 10))
-plt.suptitle('Orginal and Thresholded Images', fontsize=18)
-
-# Main original image
-plt.subplot(4, 3, 1)
-plt.imshow(image, cmap='gray')
-plt.title('Original Image')
-plt.axis('off')
-
-# Row 2: Unit Step
-plt.subplot(4, 3, 4)
-plt.imshow(u1, cmap='gray')
-plt.title('Unit Step T=50')
-plt.axis('off')
-
-plt.subplot(4, 3, 5)
-plt.imshow(u2, cmap='gray')
-plt.title('Unit Step T=128')
-plt.axis('off')
-
-plt.subplot(4, 3, 6)
-plt.imshow(u3, cmap='gray')
-plt.title('Unit Step T=200')
-plt.axis('off')
-
-# Row 3: Ramp
-plt.subplot(4, 3, 7)
-plt.imshow(r1, cmap='gray')
-plt.title('Ramp T=50')
-plt.axis('off')
-
-plt.subplot(4, 3, 8)
-plt.imshow(r2, cmap='gray')
-plt.title('Ramp T=100')
-plt.axis('off')
-
-plt.subplot(4, 3, 9)
-plt.imshow(r3, cmap='gray')
-plt.title('Ramp T=150')
-plt.axis('off')
-
-# Row 4: Quadratic
-plt.subplot(4, 3, 10)
-plt.imshow(q1, cmap='gray')
-plt.title('Quadratic T=50')
-plt.axis('off')
-
-plt.subplot(4, 3, 11)
-plt.imshow(q2, cmap='gray')
-plt.title('Quadratic T=128')
-plt.axis('off')
-
-plt.subplot(4, 3, 12)
-plt.imshow(q3, cmap='gray')
-plt.title('Quadratic T=200')
-plt.axis('off')
-
-plt.tight_layout()
-plt.show()
+if __name__ == '__main__':
+    main()
