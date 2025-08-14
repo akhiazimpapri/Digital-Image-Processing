@@ -3,79 +3,104 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Load grayscale image
-image = cv2.imread('your_image.jpg', cv2.IMREAD_GRAYSCALE)
+image = cv2.imread('/Users/akhi/Desktop/DIP/images/FLOWER.jpeg', cv2.IMREAD_GRAYSCALE)
 if image is None:
     print("Error loading image")
     exit()
 
-# 1. Unit Step Thresholding function
-def unit_step_threshold(img, threshold):
-    output = np.zeros_like(img)
-    output[img >= threshold] = 255
-    return output
+# Unit Step Thresholding
+def unit_step_threshold(img, t):
+    out = np.zeros_like(img)
+    out[img >= t] = 255
+    return out
 
-def unit_step_threshold_three(img):
-    thresholds = [50, 128, 200]
-    return [unit_step_threshold(img, t) for t in thresholds]
+# Ramp Thresholding
+def ramp_threshold(img, t):
+    out = np.zeros_like(img)
+    mask = img >= t
+    out[mask] = img[mask] - t
+    return out
 
-# 2. Ramp Thresholding function
-def ramp_threshold(img, threshold):
-    output = np.zeros_like(img, dtype=np.uint8)
-    mask = img >= threshold
-    output[mask] = img[mask] - threshold
-    return output
+# Quadratic Transform: y = 7x² + 3x - 10
+def quadratic_transform(img, t):
+    img_f = img.astype(np.float32)
+    trans = 7 * (img_f ** 2) + 3 * img_f - 10
+    trans = (trans - trans.min()) / (trans.max() - trans.min()) * 255
+    trans = trans.astype(np.uint8)
+    out = np.zeros_like(trans)
+    out[trans >= t] = 255
+    return out
 
-def ramp_threshold_three(img):
-    thresholds = [50, 100, 150]
-    return [ramp_threshold(img, t) for t in thresholds]
+# Apply transformations (no loops)
+u1 = unit_step_threshold(image, 50)
+u2 = unit_step_threshold(image, 128)
+u3 = unit_step_threshold(image, 200)
 
-# 3. Power-law (s = c * r^a) transform function
-def power_law_transform(img, c, a):
-    img_norm = img / 255.0
-    s = c * np.power(img_norm, a)
-    s = np.clip(s, 0, 1)
-    s = (s * 255).astype(np.uint8)
-    return s
+r1 = ramp_threshold(image, 50)
+r2 = ramp_threshold(image, 100)
+r3 = ramp_threshold(image, 150)
 
-def power_law_transform_three(img):
-    params = [(1, 0.5), (1, 1), (1, 2.0)]  # (c, a)
-    return [power_law_transform(img, c, a) for c, a in params]
+q1 = quadratic_transform(image, 50)
+q2 = quadratic_transform(image, 128)
+q3 = quadratic_transform(image, 200)
 
-# Process image with all functions
-unit_step_results = unit_step_threshold_three(image)
-ramp_results = ramp_threshold_three(image)
-power_law_results = power_law_transform_three(image)
+# Plot results with subplot
+plt.figure(figsize=(10, 10))
+plt.suptitle('Orginal and Thresholded Images', fontsize=18)
 
-# Plotting all results
-fig, axes = plt.subplots(3, 3, figsize=(15, 12))
-fig.suptitle('Thresholding and Power-law Transformations', fontsize=18)
+# Main original image
+plt.subplot(4, 3, 1)
+plt.imshow(image, cmap='gray')
+plt.title('Original Image')
+plt.axis('off')
 
-# Titles for each row
-row_titles = ['Unit Step Thresholding', 'Ramp Thresholding', 'Power-law Transform']
+# Row 2: Unit Step
+plt.subplot(4, 3, 4)
+plt.imshow(u1, cmap='gray')
+plt.title('Unit Step T=50')
+plt.axis('off')
 
-# Plot Unit Step Threshold results
-for i, img_out in enumerate(unit_step_results):
-    axes[0, i].imshow(img_out, cmap='gray')
-    axes[0, i].set_title(f'Threshold = {[50,128,200][i]}')
-    axes[0, i].axis('off')
+plt.subplot(4, 3, 5)
+plt.imshow(u2, cmap='gray')
+plt.title('Unit Step T=128')
+plt.axis('off')
 
-# Plot Ramp Threshold results
-for i, img_out in enumerate(ramp_results):
-    axes[1, i].imshow(img_out, cmap='gray')
-    axes[1, i].set_title(f'Threshold = {[50,100,150][i]}')
-    axes[1, i].axis('off')
+plt.subplot(4, 3, 6)
+plt.imshow(u3, cmap='gray')
+plt.title('Unit Step T=200')
+plt.axis('off')
 
-# Plot Power-law Transform results
-params = [(1, 0.5), (1, 1), (1, 2.0)]
-for i, img_out in enumerate(power_law_results):
-    c, a = params[i]
-    axes[2, i].imshow(img_out, cmap='gray')
-    axes[2, i].set_title(f'c={c}, a={a}')
-    axes[2, i].axis('off')
+# Row 3: Ramp
+plt.subplot(4, 3, 7)
+plt.imshow(r1, cmap='gray')
+plt.title('Ramp T=50')
+plt.axis('off')
 
-# Add row titles on the left side
-for ax, row_title in zip(axes[:,0], row_titles):
-    ax.set_ylabel(row_title, rotation=90, size='large', labelpad=15)
+plt.subplot(4, 3, 8)
+plt.imshow(r2, cmap='gray')
+plt.title('Ramp T=100')
+plt.axis('off')
 
-plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+plt.subplot(4, 3, 9)
+plt.imshow(r3, cmap='gray')
+plt.title('Ramp T=150')
+plt.axis('off')
+
+# Row 4: Quadratic
+plt.subplot(4, 3, 10)
+plt.imshow(q1, cmap='gray')
+plt.title('Quadratic T=50')
+plt.axis('off')
+
+plt.subplot(4, 3, 11)
+plt.imshow(q2, cmap='gray')
+plt.title('Quadratic T=128')
+plt.axis('off')
+
+plt.subplot(4, 3, 12)
+plt.imshow(q3, cmap='gray')
+plt.title('Quadratic T=200')
+plt.axis('off')
+
+plt.tight_layout()
 plt.show()
