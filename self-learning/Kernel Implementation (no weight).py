@@ -105,7 +105,7 @@ def manual_filter(input_img, kernel):
 
 
 def display(img_set, img_title):
-    plt.figure(figsize=(20, 25))
+    plt.figure(figsize=(10, 10))
     for i in range(len(img_set)):
         plt.subplot(5, 4, i + 1)
         plt.imshow(img_set[i], cmap='gray')
