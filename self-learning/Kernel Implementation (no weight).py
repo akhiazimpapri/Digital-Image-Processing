@@ -14,7 +14,7 @@ import numpy as np
 
 def main():
     # Read the image in grayscale
-    img_gray = cv2.imread("/Users/akhi/Desktop/DIP/images/SC.jpg", 0)
+    img_gray = cv2.imread("/Users/akhi/Desktop/DIP/images/FLOWER.jpeg ", 0)
 
     # Add Gaussian noise
     row, col = img_gray.shape
