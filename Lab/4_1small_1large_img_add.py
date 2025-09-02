@@ -3,31 +3,20 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
-# --- MODIFY THESE PATHS if needed ---
 path_large = '/Users/akhi/Desktop/DIP/images/img.png'      # larger image
 path_small = '/Users/akhi/Desktop/DIP/images/FLOWER.jpeg' # smaller image
-# ------------------------------------
-
-# Check files exist
-for p,name in [(path_large,'large'), (path_small,'small')]:
-    if not os.path.exists(p):
-        raise FileNotFoundError(f"{name} image not found: {p!r}")
 
 # Read images (color) and check
 large = cv2.imread(path_large, cv2.IMREAD_COLOR)
 small = cv2.imread(path_small, cv2.IMREAD_COLOR)
+
 if large is None or small is None:
     raise ValueError("cv2.imread returned None. Check the file path and image permissions.")
 
-# Convert to grayscale (safe conversion in case already single-channel)
-if large.ndim == 3:
-    large_gray = cv2.cvtColor(large, cv2.COLOR_BGR2GRAY)
-else:
-    large_gray = large.copy()
-if small.ndim == 3:
-    small_gray = cv2.cvtColor(small, cv2.COLOR_BGR2GRAY)
-else:
-    small_gray = small.copy()
+# Convert to grayscale
+large_gray = cv2.cvtColor(large, cv2.COLOR_BGR2GRAY)
+small_gray = cv2.cvtColor(small, cv2.COLOR_BGR2GRAY)
+
 
 h2, w2 = large_gray.shape
 h1, w1 = small_gray.shape

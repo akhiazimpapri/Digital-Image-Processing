@@ -1,83 +1,68 @@
 import matplotlib.pyplot as plt
-import numpy as np
 import cv2
+import numpy as np
 
-# --- Function to display image set ---
-def display_imgset(img_set, color_set, title_set = '', row = 1, col = 1):
-    plt.figure(figsize = (20, 20))
-    k = 1
-    for i in range(1, row + 1):
-        for j in range(1, col + 1):
-            plt.subplot(row, col, k)
-            img = img_set[k - 1]
-            if len(img.shape) == 3:
-                plt.imshow(img)
-            else:
-                plt.imshow(img, cmap = color_set[k - 1])
-            if title_set[k - 1] != '':
-                plt.title(title_set[k - 1])
-            k += 1
+def main():
+    # Load image
+    img = cv2.imread('/Users/akhi/Desktop/DIP/images/img.png')
+    img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
+    # Split channels
+    r_channel = img[:, :, 0]
+    g_channel = img[:, :, 1]
+    b_channel = img[:, :, 2]
+
+    # Show original + histograms
+    show_histograms(img, r_channel, g_channel, b_channel)
     plt.show()
-    plt.close()
 
-# --- Function to prepare histogram ---
-def prepare_histogram(img, color_channel):
-    pixel_count = np.zeros((256,), dtype=np.uint64)
-    h, w = img.shape
+def compute_histogram(channel):
+    """Manual histogram (loop method)"""
+    h, w = channel.shape
+    pixel_array = np.zeros(256, dtype=int)
+
     for i in range(h):
         for j in range(w):
-            pixel_value = img[i, j]
-            pixel_count[pixel_value] += 1
+            pixel_value = channel[i, j]
+            pixel_array[pixel_value] += 1
+    return pixel_array
 
-    print(pixel_count)
+def show_histograms(img, r, g, b):
+    # Compute histograms
+    hist_r = compute_histogram(r)
+    hist_g = compute_histogram(g)
+    hist_b = compute_histogram(b)
 
-    x = np.arange(256)
-    plt.figure(figsize=(20, 6))
+    # Create figure
+    plt.figure(figsize=(14, 6))
 
-    plt.subplot(1, 2, 1)
-    plt.plot(x, pixel_count, 'ro')
-    plt.title('Histogram of ' + color_channel + ' Channel')
-    plt.xlabel('Pixel Values')
-    plt.ylabel('Number of Pixels')
+    # Show original image
+    plt.subplot(2, 2, 1)
+    plt.imshow(img)
+    plt.title("Original Image")
+    plt.axis("off")
 
-    plt.subplot(1, 2, 2)
-    plt.bar(x, pixel_count)
-    plt.title('Histogram of ' + color_channel + ' Channel')
-    plt.xlabel('Pixel Values')
-    plt.ylabel('Number of Pixels')
+    # Histogram - Red channel
+    plt.subplot(2, 2, 2)
+    plt.bar(np.arange(256), hist_r, color='r', width=1.0)
+    plt.title("Histogram - Red Channel")
+    plt.xlabel("Pixel Intensity (0-255)")
+    plt.ylabel("Frequency")
 
-    plt.show()
-    plt.close()
+    # Histogram - Green channel
+    plt.subplot(2, 2, 3)
+    plt.bar(np.arange(256), hist_g, color='g', width=1.0)
+    plt.title("Histogram - Green Channel")
+    plt.xlabel("Pixel Intensity (0-255)")
+    plt.ylabel("Frequency")
 
-# --- Main Execution ---
-
-# Load image in BGR, convert to RGB
-img = cv2.imread('/Users/akhi/Desktop/DIP/images/FLOWER.jpeg')
-img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-
-# Split RGB channels
-red_img = img_rgb[:, :, 0]
-green_img = img_rgb[:, :, 1]
-blue_img = img_rgb[:, :, 2]
-
-# Print pixel matrices
-print("RGB Image:\n", img_rgb)
-print("Red Channel:\n", red_img)
-print("Green Channel:\n", green_img)
-print("Blue Channel:\n", blue_img)
-print("Top-left 5x5 pixels:\n", img_rgb[:5, :5])
-
-# Convert to grayscale
-gray_img = cv2.cvtColor(img_rgb, cv2.COLOR_RGB2GRAY)
-print("Grayscale Image:\n", gray_img)
-
-# Display image set
-img_set = [img_rgb, red_img, green_img, blue_img]
-title_set = ['RGB', 'Red', 'Green', 'Blue']
-color_set = ['', 'Reds', 'Greens', 'Blues']
-display_imgset(img_set, color_set, title_set, row=2, col=2)
-
-# Plot histograms
-prepare_histogram(red_img, 'Red')
-prepare_histogram(green_img, 'Green')
-prepare_histogram(blue_img, 'Blue')
+    # Histogram - Blue channel
+    plt.subplot(2, 2, 4)
+    plt.bar(np.arange(256), hist_b, color='b', width=1.0)
+    plt.title("Histogram - Blue Channel")
+    plt.xlabel("Pixel Intensity (0-255)")
+    plt.ylabel("Frequency")
+    
+    plt.tight_layout()
+if __name__ == '__main__':
+    main()
