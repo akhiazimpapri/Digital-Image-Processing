@@ -21,7 +21,7 @@ for i in range(min(1000, height)):
         modified_img[i][j] = [0, 0, 0]  # RGB = Black
 
 # Show the original and modified images
-plt.figure(figsize=(10, 5))
+plt.figure(figsize=(8, 8))
 
 plt.subplot(1, 2, 1)
 plt.title("Original Image")

@@ -8,9 +8,9 @@ def main():
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
     # Split channels
-    r_channel = img[:, :, 0]
-    g_channel = img[:, :, 1]
-    b_channel = img[:, :, 2]
+    r_channel = img[:, :, 0] #red channel
+    g_channel = img[:, :, 1] #green channel
+    b_channel = img[:, :, 2] #blue channel
 
     # Show original + histograms
     show_histograms(img, r_channel, g_channel, b_channel)
