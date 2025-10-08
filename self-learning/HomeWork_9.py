@@ -1,4 +1,3 @@
-
 import cv2
 import numpy as np
 from skimage.exposure import match_histograms
@@ -7,8 +6,8 @@ import matplotlib.pyplot as plt
 # -------------------------------
 # 1. Load Images
 # -------------------------------
-source = cv2.imread("/Users/akhi/Desktop/Akhi/4,1/DIP/images/flower.png", cv2.IMREAD_GRAYSCALE)      # Source image
-reference = cv2.imread("/Users/akhi/Desktop/Akhi/4,1/DIP/images/roses.png", cv2.IMREAD_GRAYSCALE) # Reference image
+source = cv2.imread("/Users/akhi/Desktop/DIP/images/flower.png", cv2.IMREAD_GRAYSCALE)      # Source image
+reference = cv2.imread("/Users/akhi/Desktop/DIP/images/roses.png", cv2.IMREAD_GRAYSCALE) # Reference image
 
 if source is None or reference is None:
     raise FileNotFoundError("Source or Reference image not found!")
