@@ -134,7 +134,7 @@ def main():
 	plt.figure(figsize=(12, 8))
 	plt.subplot(231); plt.imshow(img, cmap='gray'); plt.title('Original'); plt.axis('off')
 	plt.subplot(232); plt.imshow(he, cmap='gray'); plt.title('HE (cv2)'); plt.axis('off')
-	plt.subplot(233); plt.imshow(ahe, cmap='gray'); plt.title('AHE'); plt.axis('off') # AHE = CLAHE+HIGH LIMIT CLIPING
+	plt.subplot(233); plt.imshow(ahe, cmap='gray'); plt.title('AHE'); plt.axis('off')       # AHE = CLAHE+HIGH LIMIT CLIPING
 	plt.subplot(234); plt.imshow(clahe2, cmap='gray'); plt.title('CLAHE clip=2'); plt.axis('off')
 	plt.subplot(235); plt.imshow(clahe4, cmap='gray'); plt.title('CLAHE clip=4'); plt.axis('off')
 	plt.subplot(236); plt.imshow(ahe_bi, cmap='gray'); plt.title('AHE + Bilinear'); plt.axis('off')
