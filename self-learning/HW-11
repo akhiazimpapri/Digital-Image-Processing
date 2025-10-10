@@ -72,7 +72,7 @@ def AHE_bilinear(img):
 
 # Main 
 def main():
-	img_path = "/Users/akhi/Desktop/DIP/images/pho.png"
+	img_path = "/Users/akhi/Desktop/DIP/images/images.jpeg"
 	img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
 	if img is None:
 		raise FileNotFoundError(f"Image not found: {img_path}")
