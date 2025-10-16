@@ -1,27 +1,20 @@
-"""
-Problem statement:
-    Apply spatial filtering by OpenCV's built-in function cv2.filter2D() using:
-
-    > a smoothing or average kernel [e.g., a kernel with 1 only]
-    > a Sobel kernel in x-direction and a Sobel kernel in y-direction
-    > a Prewitt kernel in x-direction and a Prewitt kernel in y-direction
-    > a Laplace kernel
-"""
-
 import matplotlib.pyplot as plt
 import cv2
 import numpy as np
 
 def main():
     # Read the image in grayscale
-    img_gray = cv2.imread("/Users/akhi/Desktop/DIP/images/FLOWER.jpeg ", 0)
+    img_gray = cv2.imread("/Users/akhi/Desktop/DIP/images/FLOWER.jpeg", 0)
+    if img_gray is None:
+        print("Image not found!")
+        return
 
     # Add Gaussian noise
     row, col = img_gray.shape
     mean, var = 0, 0.01
     sigma = var ** 0.5
     gauss = np.random.normal(mean, sigma, (row, col))
-    noisy_img = img_gray + gauss * 255
+    noisy_img = img_gray.astype(np.float32) + gauss * 255
     noisy_img = np.clip(noisy_img, 0, 255).astype(np.uint8)
 
     # Define kernels
@@ -49,35 +42,36 @@ def main():
                           [-1, -1, -1]], dtype=np.float32)
 
     # Apply OpenCV filters
-    avg = cv2.filter2D(noisy_img, -1, avg_filter) #-1 means: "keep the same depth (bit depth) as the input image
-    sobel_x_f = cv2.filter2D(noisy_img, -1, sobel_x)
-    sobel_y_f = cv2.filter2D(noisy_img, -1, sobel_y)
-    prewitt_x_f = cv2.filter2D(noisy_img, -1, prewitt_x)
-    prewitt_y_f = cv2.filter2D(noisy_img, -1, prewitt_y)
-    laplace_4_f = cv2.filter2D(noisy_img, -1, laplace_4)
-    laplace_8_f = cv2.filter2D(noisy_img, -1, laplace_8)
+    avg_cv = cv2.filter2D(noisy_img, -1, avg_filter)
+    sobel_x_cv = cv2.filter2D(noisy_img, -1, sobel_x)
+    sobel_y_cv = cv2.filter2D(noisy_img, -1, sobel_y)
+    prewitt_x_cv = cv2.filter2D(noisy_img, -1, prewitt_x)
+    prewitt_y_cv = cv2.filter2D(noisy_img, -1, prewitt_y)
+    laplace_4_cv = cv2.filter2D(noisy_img, -1, laplace_4)
+    laplace_8_cv = cv2.filter2D(noisy_img, -1, laplace_8)
 
-    # Apply manual filters (optimized)
-    avg_m = manual_filter(noisy_img, avg_filter)
-    sobel_x_m = manual_filter(noisy_img, sobel_x)
-    sobel_y_m = manual_filter(noisy_img, sobel_y)
-    prewitt_x_m = manual_filter(noisy_img, prewitt_x)
-    prewitt_y_m = manual_filter(noisy_img, prewitt_y)
-    laplace_4_m = manual_filter(noisy_img, laplace_4)
-    laplace_8_m = manual_filter(noisy_img, laplace_8)
+    # Apply manual filters (using cv2.filter2D for simplicity)
+    avg_manual = manual_filter(noisy_img, avg_filter)
+    sobel_x_manual = manual_filter(noisy_img, sobel_x)
+    sobel_y_manual = manual_filter(noisy_img, sobel_y)
+    prewitt_x_manual = manual_filter(noisy_img, prewitt_x)
+    prewitt_y_manual = manual_filter(noisy_img, prewitt_y)
+    laplace_4_manual = manual_filter(noisy_img, laplace_4)
+    laplace_8_manual = manual_filter(noisy_img, laplace_8)
 
     # Collect images for display
     img_set = [
         img_gray, noisy_img,
-        avg, avg_m,
-        sobel_x_f, sobel_x_m,
-        sobel_y_f, sobel_y_m,
-        prewitt_x_f, prewitt_x_m,
-        prewitt_y_f, prewitt_y_m,
-        laplace_4_f, laplace_4_m,
-        laplace_8_f, laplace_8_m
+        avg_cv, avg_manual,
+        sobel_x_cv, sobel_x_manual,
+        sobel_y_cv, sobel_y_manual,
+        prewitt_x_cv, prewitt_x_manual,
+        prewitt_y_cv, prewitt_y_manual,
+        laplace_4_cv, laplace_4_manual,
+        laplace_8_cv, laplace_8_manual
     ]
-    img_title = [
+
+    img_titles = [
         'Original', 'Gaussian Noise',
         'Avg (cv2)', 'Avg (manual)',
         'Sobel-X (cv2)', 'Sobel-X (manual)',
@@ -88,28 +82,26 @@ def main():
         'Laplace-8 (cv2)', 'Laplace-8 (manual)'
     ]
 
-    display(img_set, img_title)
+    display_images(img_set, img_titles)
 
 
-def manual_filter(input_img, kernel):
-    """Manual convolution using OpenCV backend (fast)."""
-    tmp_img = input_img.astype(np.float32)
-
-    # Flip kernel for convolution
-    kernel_flipped = np.flipud(np.fliplr(kernel))
-
-    # Convolve
-    output_img = cv2.filter2D(tmp_img, -1, kernel_flipped)
-
-    return np.clip(output_img, 0, 255).astype(np.uint8)
+def manual_filter(img, kernel):
+    """Manual convolution using cv2.filter2D."""
+    img_float = img.astype(np.float32)
+    # cv2.filter2D does convolution; kernel flip not required
+    output = cv2.filter2D(img_float, -1, kernel)
+    return np.clip(output, 0, 255).astype(np.uint8)
 
 
-def display(img_set, img_title):
-    plt.figure(figsize=(10, 10))
-    for i in range(len(img_set)):
-        plt.subplot(5, 4, i + 1)
+def display_images(img_set, titles):
+    plt.figure(figsize=(8, 8))
+    n = len(img_set)
+    cols = 4
+    rows = n // cols + (n % cols != 0)
+    for i in range(n):
+        plt.subplot(rows, cols, i + 1)
         plt.imshow(img_set[i], cmap='gray')
-        plt.title(img_title[i])
+        plt.title(titles[i], fontsize=9)
         plt.axis('off')
     plt.tight_layout()
     plt.show()

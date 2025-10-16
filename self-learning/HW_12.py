@@ -44,8 +44,8 @@ def huffman_image(img, top_n=15):
 
 	#main function
 def main():	
-	img_path = "/Users/akhi/Desktop/DIP/images/lily.jpeg"
-	img_path1 = "/Users/akhi/Desktop/DIP/images/people.png"
+	img_path = "/Users/akhi/Desktop/DIP/images/SC.jpg"
+	img_path1 = "/Users/akhi/Desktop/DIP/images/img.png"
 	img = cv2.imread(img_path, cv2.IMREAD_GRAYSCALE)
 	img1 = cv2.imread(img_path1, cv2.IMREAD_GRAYSCALE)
 	
