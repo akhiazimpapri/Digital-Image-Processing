@@ -22,7 +22,7 @@ def func2(img):
     return np.clip(img1, 0, 255).astype(np.uint8)
 
 def func3(img):
-    m = 1.05
+    m = 1
     c = 5
     thres1 = 50
     thres2 = 196
