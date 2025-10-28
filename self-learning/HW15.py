@@ -19,7 +19,7 @@ img_counter = 0
 #================= Main Execution Workflow ============================
 def main():
     # Load original grayscale image
-    img = cv2.imread('/Users/akhi/Desktop/DIP/images/tulip.png', 0)
+    img = cv2.imread('/Users/akhi/Desktop/DIP/images/people.png', 0)
 
     # Create contrast variants
     low_img = cv2.convertScaleAbs(img, alpha=0.5, beta=40)   # Low contrast
@@ -219,7 +219,7 @@ def display_2(img_set, titles):
     plt.show()
     plt.close()
 
-
+    plt.tight_layout()
 #================= Run Script ========================================
 if __name__ == "__main__":
     main()

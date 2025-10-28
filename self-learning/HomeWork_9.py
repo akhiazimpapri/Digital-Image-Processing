@@ -3,9 +3,7 @@ import numpy as np
 from skimage.exposure import match_histograms
 import matplotlib.pyplot as plt
 
-# -------------------------------
-# 1. Load Images
-# -------------------------------
+# Load Images
 source = cv2.imread("/Users/akhi/Desktop/DIP/images/flower.png", cv2.IMREAD_GRAYSCALE)      # Source image
 reference = cv2.imread("/Users/akhi/Desktop/DIP/images/roses.png", cv2.IMREAD_GRAYSCALE) # Reference image
 
@@ -13,12 +11,12 @@ if source is None or reference is None:
     raise FileNotFoundError("Source or Reference image not found!")
 
 # -------------------------------
-# 2. Built-in Histogram Matching (Scikit-Image)
+# Built-in Histogram Matching (Scikit-Image)
 # -------------------------------
 matched_builtin = match_histograms(source, reference)
 
 # -------------------------------
-# 3. Custom Method 1: CDF-based Histogram Matching
+# Custom Method 1: CDF-based Histogram Matching
 # -------------------------------
 def histogram_matching_cdf(source, reference):
     src_hist, _ = np.histogram(source.flatten(), 256, [0,256])
@@ -34,7 +32,7 @@ def histogram_matching_cdf(source, reference):
 matched_cdf = histogram_matching_cdf(source, reference)
 
 # -------------------------------
-# 4. Custom Method 2: Direct Histogram Specification
+# Custom Method 2: Direct Histogram Specification
 # -------------------------------
 def histogram_matching_direct(source, reference):
     src_values, bin_idx, src_counts = np.unique(source.ravel(), return_inverse=True, return_counts=True)
@@ -69,7 +67,7 @@ high_contrast = adjust_contrast(source, alpha=2.0, beta=0)
 normal_contrast = source.copy()
 
 # -------------------------------
-# 6. Show Results
+# Show Results
 # -------------------------------
 plt.figure(figsize=(15, 8))
 plt.subplot(2, 3, 1); plt.imshow(source, cmap='gray'); plt.title("Source"); plt.axis('off')

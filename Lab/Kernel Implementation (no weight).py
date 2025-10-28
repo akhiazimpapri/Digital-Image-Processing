@@ -4,7 +4,7 @@ import numpy as np
 
 def main():
     # Read the image in grayscale
-    img_gray = cv2.imread("/Users/akhi/Desktop/DIP/images/FLOWER.jpeg", 0)
+    img_gray = cv2.imread("/Users/akhi/Desktop/DIP/images/HVD.png", 0)
     if img_gray is None:
         raise FileNotFoundError("Image not found! Check the path carefully.")
 
@@ -92,7 +92,7 @@ def manual_filter(input_img, kernel):
 
 
 def display(img_set, img_title):
-    plt.figure(figsize=(8, 8))
+    plt.figure(figsize=(10, 10))
     for i in range(len(img_set)):
         plt.subplot(5, 4, i + 1)
         plt.imshow(img_set[i], cmap='gray')
