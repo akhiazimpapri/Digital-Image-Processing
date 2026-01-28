@@ -6,8 +6,8 @@ import matplotlib.pyplot as plt
 
 #------------------------config----------------#
 IMAGES = [
-    "/Users/akhi/Desktop/DIP/images/FLOWER.jpeg",
-    "//Users/akhi/Desktop/DIP/images/people.png",
+    "/Users/akhi/Desktop/DIP/images/images.jpeg",
+    "//Users/akhi/Desktop/DIP/images/img.png",
 ]
 MAX_DIM = 128  # keep images manageable for DFT
 

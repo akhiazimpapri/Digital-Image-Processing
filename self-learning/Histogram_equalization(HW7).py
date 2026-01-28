@@ -14,7 +14,7 @@ def hist_equalization(img):
     
     # Compute cumulative distribution function (CDF)
     cdf = pdf.cumsum()
-    
+    #The CDF represents the cumulative sum of probabilities of gray levels up to a certain intensity value.
     # Normalize CDF to 0–255
     cdf_normalized = np.round(cdf * 255).astype(np.uint8)
     
